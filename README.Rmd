@@ -7,8 +7,8 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+options(pillar.min_chars = 15)
 ```
-
 
 ## Load data frame
 
@@ -21,9 +21,6 @@ library(tidyverse)
 df <- read_tsv("https://raw.githubusercontent.com/modche/rainbow_hydrology/main/hess_papers_rainbow.txt")
 ```
 
-
-
-
 ## 1. Overwiew data variables
 
 -   year = year of publication (YYYY)
@@ -32,17 +29,17 @@ df <- read_tsv("https://raw.githubusercontent.com/modche/rainbow_hydrology/main/
 -   authors = list of authors comma-separated
 -   n_authors = number of authors (integer between 1 and 27)
 -   col_code = color-issue classification (see below)
--    volume = Journal volume
+-   volume = Journal volume
 -   start_page = first page of paper (consecutive)
 -   end_page = last page of paper (consecutive)
 -   base_url = base url to access the PDF of the paper with `/volume/start_page/year/`
 -   filename = specific file name of the paper PDF (e.g. `hess-9-111-2005.pdf`)
 
-
 ```{r structure}
 str(df)
 head(df)
 tail(df)
+skimr::skim(df)
 ```
 
 ### 2. Explanatory data analysis
@@ -53,7 +50,12 @@ Distribution of surveyed papers and 2005, 2010, 2015 and 2020.
 df %>% count(year)
 ```
 
-Color classification is stored in the `col_code` variable with `0` = chromatic and issue-free, `1` = red-green issues, `2`= rainbow issues and `bw`= black and white paper.
+Color classification is stored in the `col_code` variable with:
+
+-   `0` = chromatic and issue-free,
+-   `1` = red-green issues,
+-   `2`= rainbow issues and
+-   `bw`= black and white paper.
 
 ```{r col_code}
 df %>% count(col_code)
@@ -61,7 +63,7 @@ df %>% count(col_code)
 
 Figure showing number of authors across color classification.
 
-```{r col_code_fig, fig.height = 2, echo = FALSE}
+```{r col_code_fig, fig.height = 2.5, echo = FALSE}
 ggplot(data = df) +
     geom_histogram(aes(x = n_authors), 
                    fill = "grey30", 
@@ -78,6 +80,8 @@ ggplot(data = df) +
 
 Data frame can be accessed to extract a vector of links to download specific papers.
 
+**Example:** Access a specific paper from 2005:
+
 ```{r}
 df %>% filter(year == 2005, start_page == 111) %>% 
     select(base_url, filename) %>% 
@@ -85,12 +89,16 @@ df %>% filter(year == 2005, start_page == 111) %>%
     pull(download_link)
 ```
 
+**Example:** Single-author papers from 2005 that are pure black and white papers:
+
 ```{r}
 df %>% filter(year == 2005, col_code == "bw", n_authors == 1) %>% 
     select(base_url, filename) %>% 
     mutate(download_link = paste0(base_url, filename)) %>% 
     pull(download_link)
 ```
+
+**Example**: Rainbow papers from 2020 with more than 10 authors:
 
 ```{r}
 df %>% filter(year == 2020, col_code == 2, n_authors > 10) %>% 

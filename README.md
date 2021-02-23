@@ -80,30 +80,77 @@ head(df)
 ```
 
     ## # A tibble: 6 x 11
-    ##    year date       title authors n_authors col_code volume start_page end_page
-    ##   <dbl> <date>     <chr> <chr>       <dbl> <chr>     <dbl>      <dbl>    <dbl>
-    ## 1  2005 2005-05-09 Brin… J. C. …         1 bw            9          3       14
-    ## 2  2005 2005-06-09 Cons… M. Fal…         2 0             9         15       28
-    ## 3  2005 2005-06-09 Sign… D. Tet…         2 bw            9         29       41
-    ## 4  2005 2005-06-14 Impa… B. O. …         4 bw            9         43       55
-    ## 5  2005 2005-06-14 Biog… V. R. …        12 bw            9         57       66
-    ## 6  2005 2005-06-14 Fact… J. Pem…         7 0             9         67       80
-    ## # … with 2 more variables: base_url <chr>, filename <chr>
+    ##    year date       title           authors         n_authors col_code volume
+    ##   <dbl> <date>     <chr>           <chr>               <dbl> <chr>     <dbl>
+    ## 1  2005 2005-05-09 Bringing it al… J. C. I. Dooge          1 bw            9
+    ## 2  2005 2005-06-09 Consumptive wa… M. Falkenmark …         2 0             9
+    ## 3  2005 2005-06-09 Significance o… D. Tetzlaff an…         2 bw            9
+    ## 4  2005 2005-06-14 Impact of phos… B. O. L. Demar…         4 bw            9
+    ## 5  2005 2005-06-14 Biogeochemistr… V. R. Shevchen…        12 bw            9
+    ## 6  2005 2005-06-14 Factors influe… J. Pempkowiak,…         7 0             9
+    ## # … with 4 more variables: start_page <dbl>, end_page <dbl>, base_url <chr>,
+    ## #   filename <chr>
 
 ``` r
 tail(df)
 ```
 
     ## # A tibble: 6 x 11
-    ##    year date       title authors n_authors col_code volume start_page end_page
-    ##   <dbl> <date>     <chr> <chr>       <dbl> <chr>     <dbl>      <dbl>    <dbl>
-    ## 1  2020 2020-10-23 Hier… Haifan…        11 2            24       4971     4996
-    ## 2  2020 2020-10-26 3D m… Valent…         6 2            24       4997     5013
-    ## 3  2020 2020-10-28 Aver… Elham …         3 0            24       5015     5025
-    ## 4  2020 2020-10-28 Anth… Alex Z…         2 0            24       5027     5041
-    ## 5  2020 2020-10-29 Dyna… Jianro…         6 2            24       5043     5056
-    ## 6  2020 2020-10-30 Hydr… Xinton…         9 2            24       5057     5076
-    ## # … with 2 more variables: base_url <chr>, filename <chr>
+    ##    year date       title           authors         n_authors col_code volume
+    ##   <dbl> <date>     <chr>           <chr>               <dbl> <chr>     <dbl>
+    ## 1  2020 2020-10-23 Hierarchical s… Haifan Liu, He…        11 2            24
+    ## 2  2020 2020-10-26 3D multiple-po… Valentin Dall'…         6 2            24
+    ## 3  2020 2020-10-28 Averaging over… Elham Rouholah…         3 0            24
+    ## 4  2020 2020-10-28 Anthropogenic … Alex Zavarsky …         2 0            24
+    ## 5  2020 2020-10-29 Dynamic mechan… Jianrong Zhu, …         6 2            24
+    ## 6  2020 2020-10-30 Hydrodynamic a… Xintong Li, Bi…         9 2            24
+    ## # … with 4 more variables: start_page <dbl>, end_page <dbl>, base_url <chr>,
+    ## #   filename <chr>
+
+``` r
+skimr::skim(df)
+```
+
+|                                                  |      |
+|:-------------------------------------------------|:-----|
+| Name                                             | df   |
+| Number of rows                                   | 797  |
+| Number of columns                                | 11   |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |      |
+| Column type frequency:                           |      |
+| character                                        | 5    |
+| Date                                             | 1    |
+| numeric                                          | 5    |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |      |
+| Group variables                                  | None |
+
+Data summary
+
+**Variable type: character**
+
+| skim\_variable | n\_missing | complete\_rate | min | max | empty | n\_unique | whitespace |
+|:---------------|-----------:|---------------:|----:|----:|------:|----------:|-----------:|
+| title          |          0 |              1 |  24 | 255 |     0 |       797 |          0 |
+| authors        |          0 |              1 |   6 | 534 |     0 |       790 |          0 |
+| col\_code      |          0 |              1 |   1 |   2 |     0 |         4 |          0 |
+| base\_url      |          0 |              1 |  46 |  50 |     0 |       797 |          0 |
+| filename       |          0 |              1 |  17 |  21 |     0 |       797 |          0 |
+
+**Variable type: Date**
+
+| skim\_variable | n\_missing | complete\_rate | min        | max        | median     | n\_unique |
+|:---------------|-----------:|---------------:|:-----------|:-----------|:-----------|----------:|
+| date           |          0 |              1 | 2005-05-09 | 2020-10-30 | 2015-06-08 |       455 |
+
+**Variable type: numeric**
+
+| skim\_variable | n\_missing | complete\_rate |    mean |      sd |   p0 |  p25 |  p50 |  p75 | p100 | hist  |
+|:---------------|-----------:|---------------:|--------:|--------:|-----:|-----:|-----:|-----:|-----:|:------|
+| year           |          0 |              1 | 2014.77 |    4.58 | 2005 | 2010 | 2015 | 2020 | 2020 | ▂▅▁▇▇ |
+| n\_authors     |          0 |              1 |    4.65 |    2.73 |    1 |    3 |    4 |    6 |   27 | ▇▂▁▁▁ |
+| volume         |          0 |              1 |   18.77 |    4.58 |    9 |   14 |   19 |   24 |   24 | ▂▅▁▇▇ |
+| start\_page    |          0 |              1 | 2077.35 | 1422.75 |    1 |  815 | 1895 | 3189 | 5057 | ▇▆▆▃▃ |
+| end\_page      |          0 |              1 | 2092.64 | 1423.50 |   14 |  829 | 1908 | 3209 | 5076 | ▇▆▆▃▃ |
 
 ### 2. Explanatory data analysis
 
@@ -121,9 +168,12 @@ df %>% count(year)
     ## 3  2015   289
     ## 4  2020   263
 
-Color classification is stored in the `col_code` variable with `0` =
-chromatic and issue-free, `1` = red-green issues, `2`= rainbow issues
-and `bw`= black and white paper.
+Color classification is stored in the `col_code` variable with:
+
+-   `0` = chromatic and issue-free,
+-   `1` = red-green issues,
+-   `2`= rainbow issues and
+-   `bw`= black and white paper.
 
 ``` r
 df %>% count(col_code)
@@ -146,6 +196,8 @@ Figure showing number of authors across color classification.
 Data frame can be accessed to extract a vector of links to download
 specific papers.
 
+**Example:** Access a specific paper from 2005:
+
 ``` r
 df %>% filter(year == 2005, start_page == 111) %>% 
     select(base_url, filename) %>% 
@@ -154,6 +206,9 @@ df %>% filter(year == 2005, start_page == 111) %>%
 ```
 
     ## [1] "https://hess.copernicus.org/articles/9/111/2005/hess-9-111-2005.pdf"
+
+**Example:** Single-author papers from 2005 that are pure black and
+white papers:
 
 ``` r
 df %>% filter(year == 2005, col_code == "bw", n_authors == 1) %>% 
@@ -166,6 +221,8 @@ df %>% filter(year == 2005, col_code == "bw", n_authors == 1) %>%
     ## [2] "https://hess.copernicus.org/articles/9/481/2005/hess-9-481-2005.pdf"
     ## [3] "https://hess.copernicus.org/articles/9/645/2005/hess-9-645-2005.pdf"
     ## [4] "https://hess.copernicus.org/articles/9/675/2005/hess-9-675-2005.pdf"
+
+**Example**: Rainbow papers from 2020 with more than 10 authors:
 
 ``` r
 df %>% filter(year == 2020, col_code == 2, n_authors > 10) %>% 
@@ -188,48 +245,51 @@ df %>% filter(str_detect(string = authors, pattern = "Weiler"))
 ```
 
     ## # A tibble: 8 x 11
-    ##    year date       title authors n_authors col_code volume start_page end_page
-    ##   <dbl> <date>     <chr> <chr>       <dbl> <chr>     <dbl>      <dbl>    <dbl>
-    ## 1  2010 2010-07-02 Effe… C. Gas…         3 1            14       1179     1194
-    ## 2  2010 2010-08-04 Expl… S. Sto…         2 0            14       1435     1448
-    ## 3  2010 2010-08-13 Inte… M. C. …         2 bw           14       1537     1549
-    ## 4  2015 2015-03-12 Quan… M. Sta…         3 0            19       1371     1384
-    ## 5  2015 2015-06-03 Esti… M. Spr…         4 0            19       2617     2635
-    ## 6  2020 2020-02-25 Beyo… Michae…         5 0            24        849      867
-    ## 7  2020 2020-05-25 Soil… Mirko …         5 0            24       2633     2653
-    ## 8  2020 2020-06-25 Fiel… Anne H…         4 0            24       3271     3288
-    ## # … with 2 more variables: base_url <chr>, filename <chr>
+    ##    year date       title           authors         n_authors col_code volume
+    ##   <dbl> <date>     <chr>           <chr>               <dbl> <chr>     <dbl>
+    ## 1  2010 2010-07-02 Effect of the … C. Gascuel-Odo…         3 1            14
+    ## 2  2010 2010-08-04 Explicit simul… S. Stoll and M…         2 0            14
+    ## 3  2010 2010-08-13 Integrated res… M. C. Roa-Garc…         2 bw           14
+    ## 4  2015 2015-03-12 Quantifying se… M. Staudinger,…         3 0            19
+    ## 5  2015 2015-06-03 Estimating flo… M. Sprenger, T…         4 0            19
+    ## 6  2020 2020-02-25 Beyond binary … Michael Stoelz…         5 0            24
+    ## 7  2020 2020-05-25 Soil moisture:… Mirko Mälicke,…         5 0            24
+    ## 8  2020 2020-06-25 Field observat… Anne Hartmann,…         4 0            24
+    ## # … with 4 more variables: start_page <dbl>, end_page <dbl>, base_url <chr>,
+    ## #   filename <chr>
 
 ``` r
 df %>% filter(str_detect(string = title, pattern = "radar"))
 ```
 
     ## # A tibble: 12 x 11
-    ##     year date       title authors n_authors col_code volume start_page end_page
-    ##    <dbl> <date>     <chr> <chr>       <dbl> <chr>     <dbl>      <dbl>    <dbl>
-    ##  1  2005 2005-06-09 Sign… D. Tet…         2 bw            9         29       41
-    ##  2  2010 2010-01-21 Char… M. Bar…         3 1            14        129      139
-    ##  3  2010 2010-02-05 Rela… H. Ste…         4 2            14        193      204
-    ##  4  2010 2010-02-05 Perf… C. Z. …         5 2            14        205      221
-    ##  5  2015 2015-01-19 Sate… Y. B. …         8 1            19        341      359
-    ##  6  2015 2015-03-02 Quan… P. Kle…         3 0            19       1125     1139
-    ##  7  2015 2015-03-02 Pola… M. Fre…         2 2            19       1141     1152
-    ##  8  2015 2015-03-25 Scop… Y. Dua…         3 2            19       1501     1520
-    ##  9  2015 2015-04-29 Eval… O. P. …         2 2            19       2037     2056
-    ## 10  2015 2015-09-29 Sing… L.-P. …         4 2            19       4001     4021
-    ## 11  2020 2020-03-24 Reco… Nicolá…         4 0            24       1367     1392
-    ## 12  2020 2020-06-19 The … Marc S…        10 2            24       3157     3188
-    ## # … with 2 more variables: base_url <chr>, filename <chr>
+    ##     year date       title           authors         n_authors col_code volume
+    ##    <dbl> <date>     <chr>           <chr>               <dbl> <chr>     <dbl>
+    ##  1  2005 2005-06-09 Significance o… D. Tetzlaff an…         2 bw            9
+    ##  2  2010 2010-01-21 Characteristic… M. Barnolas, T…         3 1            14
+    ##  3  2010 2010-02-05 Relating surfa… H. Stephen, S.…         4 2            14
+    ##  4  2010 2010-02-05 Performance of… C. Z. van de B…         5 2            14
+    ##  5  2015 2015-01-19 Satellite rada… Y. B. Sulistio…         8 1            19
+    ##  6  2015 2015-03-02 Quantitative h… P. Klenk, S. J…         3 0            19
+    ##  7  2015 2015-03-02 Polarimetric r… M. Frech and J…         2 2            19
+    ##  8  2015 2015-03-25 Scoping a fiel… Y. Duan, A. M.…         3 2            19
+    ##  9  2015 2015-04-29 Evaluation of … O. P. Prat and…         2 2            19
+    ## 10  2015 2015-09-29 Singularity-se… L.-P. Wang, S.…         4 2            19
+    ## 11  2020 2020-03-24 Reconstructing… Nicolás Velásq…         4 0            24
+    ## 12  2020 2020-06-19 The accuracy o… Marc Schleiss,…        10 2            24
+    ## # … with 4 more variables: start_page <dbl>, end_page <dbl>, base_url <chr>,
+    ## #   filename <chr>
 
 ``` r
 df %>% filter(end_page > start_page + 30)
 ```
 
     ## # A tibble: 4 x 11
-    ##    year date       title authors n_authors col_code volume start_page end_page
-    ##   <dbl> <date>     <chr> <chr>       <dbl> <chr>     <dbl>      <dbl>    <dbl>
-    ## 1  2015 2015-01-15 Hydr… R. G. …         7 1            19        241      273
-    ## 2  2020 2020-06-19 The … Marc S…        10 2            24       3157     3188
-    ## 3  2020 2020-08-07 Revi… Demetr…         1 1            24       3899     3932
-    ## 4  2020 2020-08-25 Pred… Adam K…         6 0            24       4135     4167
-    ## # … with 2 more variables: base_url <chr>, filename <chr>
+    ##    year date       title           authors         n_authors col_code volume
+    ##   <dbl> <date>     <chr>           <chr>               <dbl> <chr>     <dbl>
+    ## 1  2015 2015-01-15 Hydrometeorolo… R. G. Knox, M.…         7 1            19
+    ## 2  2020 2020-06-19 The accuracy o… Marc Schleiss,…        10 2            24
+    ## 3  2020 2020-08-07 Revisiting the… Demetris Kouts…         1 1            24
+    ## 4  2020 2020-08-25 Predicting dis… Adam Kiczko, K…         6 0            24
+    ## # … with 4 more variables: start_page <dbl>, end_page <dbl>, base_url <chr>,
+    ## #   filename <chr>
