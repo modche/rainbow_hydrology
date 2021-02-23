@@ -1,6 +1,20 @@
 Color-issues in hydrological publications
 ================
 
+**Authors**: Michael Stoelzle, University Freiburg, Germany and Lina
+Stein, University Bristol, UK
+
+**Summary**: The rainbow color map is scientifically incorrect and
+hinders people with color vision deficiency to view visualizations in a
+correct way. Due to perceptual non-uniform color gradients within the
+rainbow color map the data representation is distorted what can lead to
+misinterpretation of results and flaws in science communication.
+
+Here we present the data of a paper survey of 797 scientific publication
+in the journal Hydrology and Earth System Sciences. With in the survey
+all papers were classified according to color issues. Find details about
+the data below.
+
 ## Load data frame
 
 ``` r
@@ -18,7 +32,7 @@ df <- read_tsv(file)
 #df_alternative <- read.delim(file, sep = "\t")
 ```
 
-## 1. Overwiew data variables
+## 1. Overview data variables of paper survey
 
 -   `year` = year of publication (YYYY)
 -   `date` = date (YYYY-MM-DD) of publication
@@ -166,16 +180,37 @@ Color classification is stored in the `col_code` variable with:
 -   `bw`= black and white paper.
 
 ``` r
-df %>% count(col_code)
+df %>% 
+    count(col_code) %>% 
+    mutate(pct = n / sum(n))
 ```
 
-    ## # A tibble: 4 x 2
-    ##   col_code     n
-    ## * <chr>    <int>
-    ## 1 0          377
-    ## 2 1          159
-    ## 3 2          190
-    ## 4 bw          71
+    ## # A tibble: 4 x 3
+    ##   col_code     n    pct
+    ## * <chr>    <int>  <dbl>
+    ## 1 0          377 0.473 
+    ## 2 1          159 0.199 
+    ## 3 2          190 0.238 
+    ## 4 bw          71 0.0891
+
+Focus on color classification in 2020:
+
+``` r
+df %>% 
+    group_by(year) %>% 
+    count(col_code) %>% 
+    mutate(pct = n / sum(n)) %>% 
+    filter(year == 2020) %>% 
+    ungroup()
+```
+
+    ## # A tibble: 4 x 4
+    ##    year col_code     n     pct
+    ##   <dbl> <chr>    <int>   <dbl>
+    ## 1  2020 0          139 0.529  
+    ## 2  2020 1           60 0.228  
+    ## 3  2020 2           62 0.236  
+    ## 4  2020 bw           2 0.00760
 
 Figure showing number of authors across color classification.
 
@@ -228,7 +263,7 @@ df %>% filter(year == 2020, col_code == 2, n_authors > 10) %>%
     ## [5] "https://hess.copernicus.org/articles/24/4291/2020/hess-24-4291-2020.pdf"
     ## [6] "https://hess.copernicus.org/articles/24/4971/2020/hess-24-4971-2020.pdf"
 
-### 4. Other possibilities for data analysis:
+### 4. Potential analyses with paper survey data:
 
 ``` r
 df %>% filter(str_detect(string = authors, pattern = "Weiler"))
@@ -271,6 +306,26 @@ df %>% filter(str_detect(string = title, pattern = "radar"))
     ## #   filename <chr>
 
 ``` r
+df %>% filter(n_authors >= 7, col_code == 2)
+```
+
+    ## # A tibble: 43 x 11
+    ##     year date       title           authors         n_authors col_code volume
+    ##    <dbl> <date>     <chr>           <chr>               <dbl> <chr>     <dbl>
+    ##  1  2010 2010-01-22 Soil moisture … C. Gruhier, P.…        11 2            14
+    ##  2  2010 2010-02-22 A contribution… E. Alcântara, …         7 2            14
+    ##  3  2010 2010-05-28 Modelling soil… S. Juglea, Y. …        10 2            14
+    ##  4  2010 2010-06-24 A quality asse… T. Graeff, E. …         8 2            14
+    ##  5  2010 2010-08-24 A past dischar… G. Thirel, E. …         7 2            14
+    ##  6  2010 2010-09-09 Combined use o… D. Courault, R…         7 2            14
+    ##  7  2010 2010-10-11 A multi basin … Z. M. Easton, …         9 2            14
+    ##  8  2010 2010-10-21 Bayesian appro… H. Murakami, X…         8 2            14
+    ##  9  2010 2010-12-06 Interannual va… F. Frappart, F…         8 2            14
+    ## 10  2010 2010-12-16 Error characte… W. A. Dorigo, …         7 2            14
+    ## # … with 33 more rows, and 4 more variables: start_page <dbl>, end_page <dbl>,
+    ## #   base_url <chr>, filename <chr>
+
+``` r
 df %>% filter(end_page > start_page + 30)
 ```
 
@@ -283,3 +338,36 @@ df %>% filter(end_page > start_page + 30)
     ## 4  2020 2020-08-25 Predicting dis… Adam Kiczko, K…         6 0            24
     ## # … with 4 more variables: start_page <dbl>, end_page <dbl>, base_url <chr>,
     ## #   filename <chr>
+
+### 5. Text mining
+
+Code example to start with text mining, e.g. extracting common words in
+paper titles.
+
+``` r
+library(tidytext)
+
+df %>% 
+    unnest_tokens(word, title) %>% 
+    select(col_code, word, n_authors) %>% 
+    mutate(word_len = str_length(word)) %>% 
+    filter(word_len >= 5) %>% 
+    group_by(word) %>% 
+    add_count() %>% 
+    ungroup()
+```
+
+    ## # A tibble: 7,621 x 5
+    ##    col_code word         n_authors word_len     n
+    ##    <chr>    <chr>            <dbl>    <int> <int>
+    ##  1 bw       bringing             1        8     1
+    ##  2 bw       together             1        8     1
+    ##  3 0        consumptive          2       11     1
+    ##  4 0        water                2        5   161
+    ##  5 0        humanity             2        8     1
+    ##  6 0        curing               2        6     1
+    ##  7 0        blind                2        5     1
+    ##  8 bw       significance         2       12     2
+    ##  9 bw       spatial              2        7    31
+    ## 10 bw       variability          2       11    37
+    ## # … with 7,611 more rows

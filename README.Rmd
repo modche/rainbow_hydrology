@@ -10,6 +10,12 @@ knitr::opts_chunk$set(echo = TRUE)
 options(pillar.min_chars = 15)
 ```
 
+**Authors**: Michael Stoelzle, University Freiburg, Germany and Lina Stein, University Bristol, UK
+
+**Summary**: The rainbow color map is scientifically incorrect and hinders people with color vision deficiency to view visualizations in a correct way. Due to perceptual non-uniform color gradients within the rainbow color map the data representation is distorted what can lead to misinterpretation of results and flaws in science communication.
+
+Here we present the data of a paper survey of 797 scientific publication in the journal Hydrology and Earth System Sciences. With in the survey all papers were classified according to color issues. Find details about the data below.
+
 ## Load data frame
 
 ```{r load_packages, message=FALSE, warning=FALSE}
@@ -27,7 +33,7 @@ df <- read_tsv(file)
 #df_alternative <- read.delim(file, sep = "\t")
 ```
 
-## 1. Overwiew data variables
+## 1. Overview data variables of paper survey
 
 -   `year` = year of publication (YYYY)
 -   `date` = date (YYYY-MM-DD) of publication
@@ -64,7 +70,20 @@ Color classification is stored in the `col_code` variable with:
 -   `bw`= black and white paper.
 
 ```{r col_code}
-df %>% count(col_code)
+df %>% 
+    count(col_code) %>% 
+    mutate(pct = n / sum(n))
+```
+
+Focus on color classification in 2020:
+
+```{r col_code_2020}
+df %>% 
+    group_by(year) %>% 
+    count(col_code) %>% 
+    mutate(pct = n / sum(n)) %>% 
+    filter(year == 2020) %>% 
+    ungroup()
 ```
 
 Figure showing number of authors across color classification.
@@ -113,10 +132,29 @@ df %>% filter(year == 2020, col_code == 2, n_authors > 10) %>%
     pull(download_link)
 ```
 
-### 4. Other possibilities for data analysis:
+### 4. Potential analyses with paper survey data:
 
-```{r}
+```{r pot_analyses}
 df %>% filter(str_detect(string = authors, pattern = "Weiler"))
 df %>% filter(str_detect(string = title, pattern = "radar"))
+df %>% filter(n_authors >= 7, col_code == 2)
 df %>% filter(end_page > start_page + 30)
+```
+
+### 5. Text mining
+
+Code example to start with text mining, e.g. extracting common words in paper titles.
+
+```{r text_mining}
+library(tidytext)
+
+df %>% 
+    unnest_tokens(word, title) %>% 
+	select(col_code, word, n_authors) %>% 
+	mutate(word_len = str_length(word)) %>% 
+	filter(word_len >= 5) %>% 
+    group_by(word) %>% 
+	add_count() %>% 
+    ungroup()
+
 ```
