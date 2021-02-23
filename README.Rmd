@@ -1,0 +1,103 @@
+---
+title: "Color-issues in hydrological publications"
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data manual
+
+```{r load_packages, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+```{r read_data}
+#read data remotely from github
+df <- read_tsv("https://raw.githubusercontent.com/modche/rainbow_hydrology/main/hess_papers_rainbow.txt")
+```
+
+```{r structure}
+str(df)
+head(df)
+tail(df)
+```
+
+### Description of variables in data columns
+
+-   year = year of publication (YYYY)
+-   date = date (YYYY-MM-DD) of publication
+-   title = full paper title from journal website
+-   authors = list of authors comma-separated
+-   n_authors = number of authors (integer between 1 and 27)
+-   col_code = color-issue classification (see below)
+-    volume = Journal volume
+-   start_page = first page of paper (consecutive)
+-   end_page = last page of paper (consecutive)
+-   base_url = base url to access the PDF of the paper with `/volume/start_page/year/`
+-    filename = specific file name of the paper PDF (e.g. `hess-9-111-2005.pdf`)
+
+### Explanatory data analysis
+
+Distribution of surveyed papers and 2005, 2010, 2015 and 2020.
+
+```{r}
+df %>% count(year)
+```
+
+Color classification is stored in the `col_code` variable with `0` = chromatic and issue-free, `1` = red-green issues, `2`= rainbow issues and `bw`= black and white paper.
+
+```{r col_code}
+df %>% count(col_code)
+```
+
+Figure showing number of authors across color classification.
+
+```{r, fig.height = 3, echo = FALSE}
+ggplot(data = df) +
+    geom_histogram(aes(x = n_authors), 
+                   fill = "grey30", 
+                   binwidth = 1, 
+                   colour = "white",
+                   size=.5) +
+    facet_wrap(~col_code, nrow = 1) +
+    theme_bw() +
+    theme(panel.grid = element_blank())
+    
+```
+
+### PDF access - examples
+
+Data frame can be accessed to extract a vector of links to download specific papers.
+
+```{r}
+df %>% filter(year == 2005, start_page == 111) %>% 
+    select(base_url, filename) %>% 
+    mutate(download_link = paste0(base_url, filename)) %>% 
+    pull(download_link)
+```
+
+```{r}
+df %>% filter(year == 2005, col_code == "bw", n_authors == 1) %>% 
+    select(base_url, filename) %>% 
+    mutate(download_link = paste0(base_url, filename)) %>% 
+    pull(download_link)
+```
+
+```{r}
+df %>% filter(year == 2020, col_code == 2, n_authors > 10) %>% 
+    select(base_url, filename) %>% 
+    mutate(download_link = paste0(base_url, filename)) %>% 
+    pull(download_link)
+```
+
+### Other possibilities for data analysis:
+
+```{r}
+df %>% filter(str_detect(string = authors, pattern = "Weiler"))
+df %>% filter(str_detect(string = title, pattern = "radar"))
+df %>% filter(end_page > start_page + 30)
+```
