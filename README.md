@@ -1,7 +1,7 @@
 Color-issues in hydrological publications
 ================
 
-## Data manual
+## Load data frame
 
 ``` r
 library(tidyverse)
@@ -27,6 +27,22 @@ df <- read_tsv("https://raw.githubusercontent.com/modche/rainbow_hydrology/main/
     ##   base_url = col_character(),
     ##   filename = col_character()
     ## )
+
+## 1. Overwiew data variables
+
+-   year = year of publication (YYYY)
+-   date = date (YYYY-MM-DD) of publication
+-   title = full paper title from journal website
+-   authors = list of authors comma-separated
+-   n\_authors = number of authors (integer between 1 and 27)
+-   col\_code = color-issue classification (see below)
+-   volume = Journal volume
+-   start\_page = first page of paper (consecutive)
+-   end\_page = last page of paper (consecutive)
+-   base\_url = base url to access the PDF of the paper with
+    `/volume/start_page/year/`
+-   filename = specific file name of the paper PDF
+    (e.g. `hess-9-111-2005.pdf`)
 
 ``` r
 str(df)
@@ -89,23 +105,7 @@ tail(df)
     ## 6  2020 2020-10-30 Hydr… Xinton…         9 2            24       5057     5076
     ## # … with 2 more variables: base_url <chr>, filename <chr>
 
-### Description of variables in data columns
-
--   year = year of publication (YYYY)
--   date = date (YYYY-MM-DD) of publication
--   title = full paper title from journal website
--   authors = list of authors comma-separated
--   n\_authors = number of authors (integer between 1 and 27)
--   col\_code = color-issue classification (see below)
--   volume = Journal volume
--   start\_page = first page of paper (consecutive)
--   end\_page = last page of paper (consecutive)
--   base\_url = base url to access the PDF of the paper with
-    `/volume/start_page/year/`
--   filename = specific file name of the paper PDF
-    (e.g. `hess-9-111-2005.pdf`)
-
-### Explanatory data analysis
+### 2. Explanatory data analysis
 
 Distribution of surveyed papers and 2005, 2010, 2015 and 2020.
 
@@ -139,9 +139,9 @@ df %>% count(col_code)
 
 Figure showing number of authors across color classification.
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](README_files/figure-gfm/col_code_fig-1.png)<!-- -->
 
-### PDF access - examples
+### 3. Access PDF papers with download links
 
 Data frame can be accessed to extract a vector of links to download
 specific papers.
@@ -181,7 +181,7 @@ df %>% filter(year == 2020, col_code == 2, n_authors > 10) %>%
     ## [5] "https://hess.copernicus.org/articles/24/4291/2020/hess-24-4291-2020.pdf"
     ## [6] "https://hess.copernicus.org/articles/24/4971/2020/hess-24-4971-2020.pdf"
 
-### Other possibilities for data analysis:
+### 4. Other possibilities for data analysis:
 
 ``` r
 df %>% filter(str_detect(string = authors, pattern = "Weiler"))

@@ -9,7 +9,8 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Data manual
+
+## Load data frame
 
 ```{r load_packages, message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -20,13 +21,10 @@ library(tidyverse)
 df <- read_tsv("https://raw.githubusercontent.com/modche/rainbow_hydrology/main/hess_papers_rainbow.txt")
 ```
 
-```{r structure}
-str(df)
-head(df)
-tail(df)
-```
 
-### Description of variables in data columns
+
+
+## 1. Overwiew data variables
 
 -   year = year of publication (YYYY)
 -   date = date (YYYY-MM-DD) of publication
@@ -38,9 +36,16 @@ tail(df)
 -   start_page = first page of paper (consecutive)
 -   end_page = last page of paper (consecutive)
 -   base_url = base url to access the PDF of the paper with `/volume/start_page/year/`
--    filename = specific file name of the paper PDF (e.g. `hess-9-111-2005.pdf`)
+-   filename = specific file name of the paper PDF (e.g. `hess-9-111-2005.pdf`)
 
-### Explanatory data analysis
+
+```{r structure}
+str(df)
+head(df)
+tail(df)
+```
+
+### 2. Explanatory data analysis
 
 Distribution of surveyed papers and 2005, 2010, 2015 and 2020.
 
@@ -56,7 +61,7 @@ df %>% count(col_code)
 
 Figure showing number of authors across color classification.
 
-```{r, fig.height = 3, echo = FALSE}
+```{r col_code_fig, fig.height = 2, echo = FALSE}
 ggplot(data = df) +
     geom_histogram(aes(x = n_authors), 
                    fill = "grey30", 
@@ -64,12 +69,12 @@ ggplot(data = df) +
                    colour = "white",
                    size=.5) +
     facet_wrap(~col_code, nrow = 1) +
-    theme_bw() +
+    theme_bw(14) +
     theme(panel.grid = element_blank())
     
 ```
 
-### PDF access - examples
+### 3. Access PDF papers with download links
 
 Data frame can be accessed to extract a vector of links to download specific papers.
 
@@ -94,7 +99,7 @@ df %>% filter(year == 2020, col_code == 2, n_authors > 10) %>%
     pull(download_link)
 ```
 
-### Other possibilities for data analysis:
+### 4. Other possibilities for data analysis:
 
 ```{r}
 df %>% filter(str_detect(string = authors, pattern = "Weiler"))
