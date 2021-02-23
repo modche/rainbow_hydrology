@@ -4,44 +4,34 @@ Color-issues in hydrological publications
 ## Load data frame
 
 ``` r
+#install.packages("tidyverse")
 library(tidyverse)
 ```
 
 ``` r
 #read data remotely from github
-df <- read_tsv("https://raw.githubusercontent.com/modche/rainbow_hydrology/main/hess_papers_rainbow.txt")
-```
+file <- 'https://raw.githubusercontent.com/modche/rainbow_hydrology/main/hess_papers_rainbow.txt'
 
-    ## 
-    ## ── Column specification ────────────────────────────────────────────────────────
-    ## cols(
-    ##   year = col_double(),
-    ##   date = col_date(format = ""),
-    ##   title = col_character(),
-    ##   authors = col_character(),
-    ##   n_authors = col_double(),
-    ##   col_code = col_character(),
-    ##   volume = col_double(),
-    ##   start_page = col_double(),
-    ##   end_page = col_double(),
-    ##   base_url = col_character(),
-    ##   filename = col_character()
-    ## )
+df <- read_tsv(file)
+
+# read file with base R
+#df_alternative <- read.delim(file, sep = "\t")
+```
 
 ## 1. Overwiew data variables
 
--   year = year of publication (YYYY)
--   date = date (YYYY-MM-DD) of publication
--   title = full paper title from journal website
--   authors = list of authors comma-separated
--   n\_authors = number of authors (integer between 1 and 27)
--   col\_code = color-issue classification (see below)
--   volume = Journal volume
--   start\_page = first page of paper (consecutive)
--   end\_page = last page of paper (consecutive)
--   base\_url = base url to access the PDF of the paper with
+-   `year` = year of publication (YYYY)
+-   `date` = date (YYYY-MM-DD) of publication
+-   `title` = full paper title from journal website
+-   `authors` = list of authors comma-separated
+-   `n_authors` = number of authors (integer between 1 and 27)
+-   `col_code` = color-issue classification (see below)
+-   `volume` = Journal volume
+-   `start_page` = first page of paper (consecutive)
+-   `end_page` = last page of paper (consecutive)
+-   `base_url` = base url to access the PDF of the paper with
     `/volume/start_page/year/`
--   filename = specific file name of the paper PDF
+-   `filename` = specific file name of the paper PDF
     (e.g. `hess-9-111-2005.pdf`)
 
 ``` r
