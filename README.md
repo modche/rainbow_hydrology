@@ -8,12 +8,15 @@ Stein, University Bristol, UK
 hinders people with color vision deficiency to view visualizations in a
 correct way. Due to perceptual non-uniform color gradients within the
 rainbow color map the data representation is distorted what can lead to
-misinterpretation of results and flaws in science communication.
+misinterpretation of results and flaws in science communication. Here we
+present the data of a paper survey of 797 scientific publication in the
+journal Hydrology and Earth System Sciences. With in the survey all
+papers were classified according to color issues. Find details about the
+data below.
 
-Here we present the data of a paper survey of 797 scientific publication
-in the journal Hydrology and Earth System Sciences. With in the survey
-all papers were classified according to color issues. Find details about
-the data below.
+**Kaggle**: There is also a Kaggle notebook available
+(<https://www.kaggle.com/modche/rainbow-papersurvey-hydrology>) to load
+the survey data and to look into the data.
 
 ## Load data frame
 
@@ -158,7 +161,7 @@ Data summary
 
 ### 2. Explanatory data analysis
 
-Distribution of surveyed papers and 2005, 2010, 2015 and 2020.
+Distribution of surveyed papers in 2005, 2010, 2015 and 2020.
 
 ``` r
 df %>% count(year)
