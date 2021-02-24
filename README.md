@@ -215,6 +215,34 @@ df %>%
     ## 3  2020 2           62 0.236  
     ## 4  2020 bw           2 0.00760
 
+``` r
+df %>% 
+    group_by(year) %>% 
+    count(col_code) %>% 
+    mutate(pct = n / sum(n)) %>% 
+    ungroup() %>% 
+    emphatic::hl('purple', rows = col_code == 2) 
+```
+
+<pre><span style='text-decoration:underline;'>     year col_code   n         pct</span>
+1   <span style='color:#000000;'><span> 2005</span></span><span style='color:#000000;'><span>        0</span></span><span style='color:#000000;'><span>  19</span></span><span style='color:#000000;'><span> 0.351851852</span></span>
+2   <span style='color:#000000;'><span> 2005</span></span><span style='color:#000000;'><span>        1</span></span><span style='color:#000000;'><span>   5</span></span><span style='color:#000000;'><span> 0.092592593</span></span>
+3   <span style='color:#ffffff;'><span style='background-color:#a020f0;'> 2005</span></span><span style='color:#ffffff;'><span style='background-color:#a020f0;'>        2</span></span><span style='color:#ffffff;'><span style='background-color:#a020f0;'>   6</span></span><span style='color:#ffffff;'><span style='background-color:#a020f0;'> 0.111111111</span></span>
+4   <span style='color:#000000;'><span> 2005</span></span><span style='color:#000000;'><span>       bw</span></span><span style='color:#000000;'><span>  24</span></span><span style='color:#000000;'><span> 0.444444444</span></span>
+5   <span style='color:#000000;'><span> 2010</span></span><span style='color:#000000;'><span>        0</span></span><span style='color:#000000;'><span>  79</span></span><span style='color:#000000;'><span> 0.413612565</span></span>
+6   <span style='color:#000000;'><span> 2010</span></span><span style='color:#000000;'><span>        1</span></span><span style='color:#000000;'><span>  31</span></span><span style='color:#000000;'><span> 0.162303665</span></span>
+7   <span style='color:#ffffff;'><span style='background-color:#a020f0;'> 2010</span></span><span style='color:#ffffff;'><span style='background-color:#a020f0;'>        2</span></span><span style='color:#ffffff;'><span style='background-color:#a020f0;'>  47</span></span><span style='color:#ffffff;'><span style='background-color:#a020f0;'> 0.246073298</span></span>
+8   <span style='color:#000000;'><span> 2010</span></span><span style='color:#000000;'><span>       bw</span></span><span style='color:#000000;'><span>  34</span></span><span style='color:#000000;'><span> 0.178010471</span></span>
+9   <span style='color:#000000;'><span> 2015</span></span><span style='color:#000000;'><span>        0</span></span><span style='color:#000000;'><span> 140</span></span><span style='color:#000000;'><span> 0.484429066</span></span>
+10  <span style='color:#000000;'><span> 2015</span></span><span style='color:#000000;'><span>        1</span></span><span style='color:#000000;'><span>  63</span></span><span style='color:#000000;'><span> 0.217993080</span></span>
+11  <span style='color:#ffffff;'><span style='background-color:#a020f0;'> 2015</span></span><span style='color:#ffffff;'><span style='background-color:#a020f0;'>        2</span></span><span style='color:#ffffff;'><span style='background-color:#a020f0;'>  75</span></span><span style='color:#ffffff;'><span style='background-color:#a020f0;'> 0.259515571</span></span>
+12  <span style='color:#000000;'><span> 2015</span></span><span style='color:#000000;'><span>       bw</span></span><span style='color:#000000;'><span>  11</span></span><span style='color:#000000;'><span> 0.038062284</span></span>
+13  <span style='color:#000000;'><span> 2020</span></span><span style='color:#000000;'><span>        0</span></span><span style='color:#000000;'><span> 139</span></span><span style='color:#000000;'><span> 0.528517110</span></span>
+14  <span style='color:#000000;'><span> 2020</span></span><span style='color:#000000;'><span>        1</span></span><span style='color:#000000;'><span>  60</span></span><span style='color:#000000;'><span> 0.228136882</span></span>
+15  <span style='color:#ffffff;'><span style='background-color:#a020f0;'> 2020</span></span><span style='color:#ffffff;'><span style='background-color:#a020f0;'>        2</span></span><span style='color:#ffffff;'><span style='background-color:#a020f0;'>  62</span></span><span style='color:#ffffff;'><span style='background-color:#a020f0;'> 0.235741445</span></span>
+16  <span style='color:#000000;'><span> 2020</span></span><span style='color:#000000;'><span>       bw</span></span><span style='color:#000000;'><span>   2</span></span><span style='color:#000000;'><span> 0.007604563</span></span>
+</pre>
+
 Figure showing number of authors across color classification.
 
 ![](README_files/figure-gfm/col_code_fig-1.png)<!-- -->

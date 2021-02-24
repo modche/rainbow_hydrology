@@ -8,6 +8,7 @@ editor_options:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(pillar.min_chars = 15)
+emphatic::hl_opt_global(dark_mode = FALSE)
 ```
 
 **Authors**: Michael Stoelzle, University Freiburg, Germany and Lina Stein, University Bristol, UK
@@ -85,6 +86,16 @@ df %>%
     filter(year == 2020) %>% 
     ungroup()
 ```
+
+```{r}
+df %>% 
+    group_by(year) %>% 
+    count(col_code) %>% 
+    mutate(pct = n / sum(n)) %>% 
+    ungroup() %>% 
+    emphatic::hl('purple', rows = col_code == 2) 
+```
+
 
 Figure showing number of authors across color classification.
 
