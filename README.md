@@ -296,6 +296,8 @@ df %>% filter(year == 2020, col_code == 2, n_authors > 10) %>%
 
 ### 4. Potential analyses with paper survey data:
 
+Some example code snippets:
+
 ``` r
 df %>% filter(str_detect(string = authors, pattern = "Weiler"))
 ```
